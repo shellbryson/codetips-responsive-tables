@@ -1,0 +1,117 @@
+// Mixing to make breakpoints a little easier. Can be expanded with any breakpoints as needed.
+@mixin breakpoint-max($point) {
+  @media (max-width: 48rem)  { @content ; }
+}
+
+// Namespace so that it's easy to use your own table namespace
+$namespace: "table";
+$table-wrapped-header: 120px;
+$table-cell-padding: 6px;
+$color-table: #ae8f13;
+$color-table-body: #dbc674;
+
+.#{$namespace} {
+
+  transition: 0.5s;
+  padding-bottom: 0;  
+  max-width: 900px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 2px solid darken($color-table-body, 70%);
+  font-family: 'Dosis', sans-serif;
+  
+  @include breakpoint-max(medium) {
+    width: 100%;
+  }
+
+  &__head {
+    color: white;
+    
+    @include breakpoint-max(medium) { 
+      display: none;
+      visibility: hidden;
+    }
+  }
+
+  &__body,
+  &__row,
+  &__cell {
+    border: 0;
+    padding: 0;
+    text-align: left;
+    white-space: normal;
+    
+    // Mobile
+    @include breakpoint-max(medium) {
+      display: block;
+    }
+  }
+  
+  &__row {
+    margin-bottom: 10px;
+    background-color: darken($color-table-body, 5%);
+    
+    &:nth-child(even) {
+      background-color: $color-table-body;
+    }
+  }
+  
+  &__cell {
+    padding: $table-cell-padding;
+    transition: 1s;
+    
+    // Cell in table heading (desktop only)
+    .table__head & {
+      padding: 20px;
+      text-shadow: 0 1px 0 darken($color-table, 90%);
+      text-align: center;
+      font-size: 1.35rem;
+      background: $color-table;
+      box-shadow: inset 0px 1px 2px lighten($color-table, 20%);
+      border: 1px solid darken($color-table, 20%);
+    }
+    
+    // Cell in table body
+    .#{$namespace}__body & {
+      text-align: left;
+      padding: 16px;
+      border: 1px solid darken($color-table-body, 15%);
+      box-shadow: inset 0px 1px 2px lighten($color-table-body, 20%);
+    }
+  
+    &[data-title]:before {   
+
+      // Mobile
+      @include breakpoint-max(medium) {
+        display: inline-block;
+        min-width: $table-wrapped-header;
+        content: attr(data-title) ":";
+        font-weight: bold;
+      }
+    }
+
+    &:empty {
+      display: none;
+    }
+
+    &--spanned {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+  }
+}
+
+// Cosmetics
+body {
+  background-color: $color-table;
+}
+
+header {
+  padding: 40px 20px 60px;
+  
+  h1 {
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+}
